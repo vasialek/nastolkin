@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Nastolkin</string>
+    <string name="apk_version">v%1$s</string>
+    <string name="open_game_menu">Open game menu</string>
+    <string name="open_game">Open %1$s</string>
+    <string name="board_games">Board games</string>
+    <string name="all_games">All games</string>
+    <string name="zakhvat_koloniy" translatable="false">Захват Колоний</string>
+    <string name="random_city">Random city</string>
+    <string name="choose_city">Choose city</string>
+    <string name="no_city_selected">No city selected</string>
+    <string name="city_hidden">City hidden</string>
+    <string name="tap_to_hide">Tap to hide</string>
+    <string name="tap_to_show">Tap to show</string>
+    <string name="hide_city">Hide city</string>
+    <string name="show_city">Show city</string>
+    <string name="theme">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+</resources>
