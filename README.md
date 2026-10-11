@@ -69,3 +69,39 @@ An empty repository causes `NoSuchElementException` without changing the previou
 screen state. This is a data configuration error; the supplied memory repository
 is nonempty. Tests inject repository/provider implementations with a `Mock`
 suffix and a controlled Kotlin random source.
+
+## Arkham Horror campaign journals
+
+Open Arkham Horror from the game list. The common `CampaignScreen` supplies
+investigators, campaign notes, and retired investigators for every campaign.
+`CampaignRepositoryMemory` registers the available campaigns and any extra
+sections. The Drowned City intentionally has only the standard sections.
+The Feast of Hemlock Vale adds explored locations, the three-day tracker, and
+residents with shared party trust from 0 to 6 and collapsible notes.
+
+Campaign models and the ViewModel live under `games/.../arkhamhorror`; Android
+screens and Room storage live in the corresponding `app/.../arkhamhorror` package.
+The ViewModel depends on `ICampaignJournalStorage`, not on Room. Each campaign
+has one record keyed by its stable ID. Room stores an atomic JSON snapshot of the
+journal, including inactive investigators, in the private `arkham-journals.db`.
+The exported Room schema is checked into `app/schemas`; future database changes
+must supply migrations rather than destructive resets.
+
+Only added investigators are displayed, with at most four active investigators
+per campaign. Edit opens a form for remaining XP, trauma, and story cards.
+Retirement requires confirmation and retains the investigator's record. Duplicate
+identities are matched after trimming and ignoring case, including retired ones.
+There is no card catalogue yet: a card number and its character name cannot be
+recognized as the same investigator, so use a consistent identifier.
+
+Notes, checkboxes, and trust changes save automatically. Investigator forms save
+with the Save button. The save indicator confirms persistence; a failed write
+keeps the edits in memory and offers Retry. A failed read never replaces the
+stored journal with an empty one. Data survives app restarts, but export, cloud
+sync, and the chaos bag are not implemented. Clearing app data or uninstalling
+removes the journals. Android updates must use the same signing key to preserve
+the existing installation; ephemeral CI debug keys are not a release strategy.
+
+Local unit tests cover journal rules, save failures/retries, Room database
+reopening, independent campaigns, and the Compose screens. The new Compose tests
+use Robolectric native graphics to exercise Android text layout faithfully.

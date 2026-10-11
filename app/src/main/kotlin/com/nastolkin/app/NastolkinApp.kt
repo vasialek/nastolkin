@@ -55,6 +55,7 @@ fun NastolkinApp(cityViewModel: CityViewModel, gameRepository: IGameRepository =
 private fun GameContent(selectedGame: Game?, games: List<Game>, cityViewModel: CityViewModel,
     onSelectGame: (Game) -> Unit) {
     when (selectedGame) {
+        Game.ARKHAM_HORROR -> com.nastolkin.games.arkhamhorror.ArkhamScreen()
         null -> GameListScreen(games, onSelectGame, Modifier.fillMaxSize())
         Game.ZAKHVAT_KOLONIY -> {
             val cityState by cityViewModel.state.collectAsStateWithLifecycle()
