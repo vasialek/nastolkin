@@ -43,8 +43,27 @@ jobs:
       - name: Run tests and lint
         run: ./gradlew :games:test :app:testDebugUnitTest :app:lintDebug
 
-      - name: Build APK
-        run: ./gradlew :app:assembleDebug
+      - name: Build signed APK
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/nastolkin-release.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          trap 'rm -f "$ANDROID_KEYSTORE_PATH"' EXIT
+
+          test -n "$ANDROID_KEYSTORE_BASE64"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" \
+            | base64 --decode > "$ANDROID_KEYSTORE_PATH"
+
+          ./gradlew :app:assembleDebug
+
+#      - name: Build APK
+#        run: ./gradlew :app:assembleDebug
 
       - name: Apply version to APK name
         shell: bash
