@@ -8,6 +8,6 @@ class GameRepositoryMemoryTest {
     fun returnsAvailableGames() {
         val gameRepository: IGameRepository = GameRepositoryMemory()
 
-        assertEquals(listOf(Game.ZAKHVAT_KOLONIY), gameRepository.getGames())
+        assertEquals(listOf(Game.ZAKHVAT_KOLONIY, Game.ARKHAM_HORROR), gameRepository.getGames())
     }
 }
